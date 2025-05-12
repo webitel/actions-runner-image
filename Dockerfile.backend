@@ -7,7 +7,7 @@ FROM golang:${GO_VERSION}-alpine AS go
 FROM goreleaser/goreleaser:${GORELEASER_VERSION} AS goreleaser
 FROM golangci/golangci-lint:${GOLANGCI_LINT_VERSION}-alpine AS golangci
 
-FROM ghcr.io/kirychukyurii/actions-runner-image/base:${RUNNER_VERSION}
+FROM ghcr.io/webitel/actions-runner-image/base:${RUNNER_VERSION}
 
 USER root
 
