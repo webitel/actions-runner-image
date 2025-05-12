@@ -12,7 +12,7 @@ on:
         required: true
 
 jobs:
-  build-and-push:
+  deploy:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -32,21 +32,23 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
+      - name: Build and push base image
+        uses: ./.github/actions/push
         with:
-          images: ghcr.io/${{ github.repository }}
-          tags: |
-            type=raw,value=${{ github.event.inputs.version }}
-            type=sha
+          dockerfile-path: Dockerfile.base
+          image-name: ghcr.io/${{ github.repository }}-base
+          version: ${{ github.event.inputs.version }}
+          build-args: |
+              RUNNER_VERSION=${{ github.event.inputs.version }}
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+      - name: Build and push backend image
+        uses: ./.github/actions/push
         with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          dockerfile-path: Dockerfile.base
+          image-name: ghcr.io/${{ github.repository }}-be
+          version: ${{ github.event.inputs.version }}
           build-args: |
             RUNNER_VERSION=${{ github.event.inputs.version }}
+            GO_VERSION=1.24.3
+            GORELEASER_VERSION=v2.8.2
+            GOLANGCI_LINT_VERSION=v1.64.8
