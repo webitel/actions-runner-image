@@ -12,9 +12,9 @@ FROM ghcr.io/kirychukyurii/actions-runner-image/base:${RUNNER_VERSION}
 USER root
 
 COPY --from=go /usr/local/go /usr/local/go
-ENV GOPATH=/opt/go
+ENV GOPATH=/home/runner/go
 ENV GOMODCACHE=$GOPATH/pkg/mod
-ENV GOCACHE=/opt/.cache/go
+ENV GOCACHE=/home/runner/.cache/go
 ENV PATH=$GOPATH/bin:/usr/local/go/bin:$PATH
 
 COPY --from=goreleaser /usr/bin/goreleaser /usr/local/bin/goreleaser
