@@ -44,7 +44,7 @@ jobs:
       - name: Build and push backend image
         uses: ./.github/actions/push
         with:
-          dockerfile-path: Dockerfile.base
+          dockerfile-path: Dockerfile.backend
           image-name: ghcr.io/${{ github.repository }}/backend
           version: ${{ github.event.inputs.version }}
           build-args: |
