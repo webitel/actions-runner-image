@@ -36,7 +36,7 @@ jobs:
         uses: ./.github/actions/push
         with:
           dockerfile-path: Dockerfile.base
-          image-name: ghcr.io/${{ github.repository }}-base
+          image-name: ghcr.io/${{ github.repository }}/base
           version: ${{ github.event.inputs.version }}
           build-args: |
               RUNNER_VERSION=${{ github.event.inputs.version }}
@@ -45,7 +45,7 @@ jobs:
         uses: ./.github/actions/push
         with:
           dockerfile-path: Dockerfile.base
-          image-name: ghcr.io/${{ github.repository }}-be
+          image-name: ghcr.io/${{ github.repository }}/backend
           version: ${{ github.event.inputs.version }}
           build-args: |
             RUNNER_VERSION=${{ github.event.inputs.version }}
