@@ -63,7 +63,6 @@ jobs:
             build-args: |
               RUNNER_VERSION=${{ github.event.inputs.version }}
               POSTGRES_VERSION=15
-              SIGNALWIRE_TOKEN=${{ secrets.SIGNALWIRE_TOKEN }}
 
     steps:
       - name: Checkout code
@@ -85,4 +84,6 @@ jobs:
           dockerfile-path: ${{ matrix.include.dockerfile-path }}
           image-name: ghcr.io/${{ github.repository }}/${{ matrix.include.image-name }}
           version: ${{ github.event.inputs.version }}
-          build-args: ${{ matrix.include.build-args }}
+          build-args: |
+            SIGNALWIRE_TOKEN=${{ secrets.SIGNALWIRE_TOKEN }}
+            ${{ matrix.include.build-args }}
