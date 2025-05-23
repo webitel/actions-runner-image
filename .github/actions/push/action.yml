@@ -14,6 +14,9 @@ inputs:
   build-args:
     description: Optional newline-separated build arguments (e.g. "ARG1=value\nARG2=value")
     required: false
+  build-secrets:
+    description: Sensitive information, such as a password or API token, consumed as part of the build process
+    required: false
 
 runs:
   using: "composite"
@@ -35,5 +38,9 @@ runs:
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
+        platforms: linux/amd64
+        secrets: | 
+          ${{ inputs.build-secrets }}
+
         build-args: |
           ${{ inputs.build-args }}

@@ -84,6 +84,8 @@ jobs:
           dockerfile-path: ${{ matrix.dockerfile-path }}
           image-name: ghcr.io/${{ github.repository }}/${{ matrix.image-name }}
           version: ${{ github.event.inputs.version }}
-          build-args: |
+          build-secrets: |
             SIGNALWIRE_TOKEN=${{ secrets.SIGNALWIRE_TOKEN }}
+
+          build-args: |  
             ${{ matrix.build-args }}

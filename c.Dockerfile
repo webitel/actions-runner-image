@@ -29,7 +29,8 @@ RUN echo "deb [ signed-by=/usr/local/share/keyrings/postgres.gpg.asc ] http://ap
     && apt-get install -y --no-install-recommends postgresql-server-dev-${POSTGRES_VERSION}
 
 
-RUN curl -sSL https://freeswitch.org/fsget | bash -s ${SIGNALWIRE_TOKEN} release \
+RUN --mount=type=secret,id=SIGNALWIRE_TOKEN,env=SIGNALWIRE_TOKEN \
+    curl -sSL https://freeswitch.org/fsget | bash -s ${SIGNALWIRE_TOKEN} release \
     && apt install -y --no-install-recommends libfreeswitch-dev \
     && rm -f /etc/apt/auth.conf
 
