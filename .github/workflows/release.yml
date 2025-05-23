@@ -33,7 +33,7 @@ jobs:
       - name: Build and push base image
         uses: ./.github/actions/push
         with:
-          dockerfile-path: Dockerfile.base
+          dockerfile-path: base.Dockerfile
           image-name: ghcr.io/${{ github.repository }}/base
           version: ${{ github.event.inputs.version }}
           build-args: |
@@ -50,7 +50,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - dockerfile-path: Dockerfile.backend
+          - dockerfile-path: backend.Dockerfile
             image-name: backend
             build-args: |
               RUNNER_VERSION=${{ github.event.inputs.version }}
@@ -58,7 +58,7 @@ jobs:
               GORELEASER_VERSION=v2.8.2
               GOLANGCI_LINT_VERSION=v1.64.8
 
-          - dockerfile-path: Dockerfile.c
+          - dockerfile-path: c.Dockerfile
             image-name: c
             build-args: |
               RUNNER_VERSION=${{ github.event.inputs.version }}
