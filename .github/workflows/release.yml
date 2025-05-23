@@ -40,7 +40,7 @@ jobs:
               RUNNER_VERSION=${{ github.event.inputs.version }}
 
   images:
-    name: Build runner ${{ matrix.include.image-name }}-image
+    name: Build runner ${{ matrix.image-name }}-image
     needs: [ base ]
     runs-on: ubuntu-latest
     permissions:
@@ -81,9 +81,9 @@ jobs:
       - name: Build and push
         uses: ./.github/actions/push
         with:
-          dockerfile-path: ${{ matrix.include.dockerfile-path }}
-          image-name: ghcr.io/${{ github.repository }}/${{ matrix.include.image-name }}
+          dockerfile-path: ${{ matrix.dockerfile-path }}
+          image-name: ghcr.io/${{ github.repository }}/${{ matrix.image-name }}
           version: ${{ github.event.inputs.version }}
           build-args: |
             SIGNALWIRE_TOKEN=${{ secrets.SIGNALWIRE_TOKEN }}
-            ${{ matrix.include.build-args }}
+            ${{ matrix.build-args }}
