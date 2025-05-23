@@ -8,7 +8,7 @@ ARG SIGNALWIRE_TOKEN
 USER root
 
 RUN apt-get update -y
-RUN apt-get install -y --no-install-recommends build-essential cmake libtool autoconf automake pkg-config \
+RUN apt-get install -y --no-install-recommends build-essential cmake libtool autoconf automake pkg-config gnupg dirmngr \
     libssl-dev libpcre3-dev libedit-dev libabsl-dev libsystemd-dev libpq-dev
 
 RUN apt-get install -y --no-install-recommends postgresql-server-dev-${POSTGRES_VERSION}
