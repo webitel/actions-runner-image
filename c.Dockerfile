@@ -34,7 +34,6 @@ RUN pkg-config --modversion grpc++
 FROM ghcr.io/webitel/actions-runner-image/base:${RUNNER_VERSION}
 
 ARG POSTGRES_VERSION=15
-ARG SIGNALWIRE_TOKEN
 
 USER root
 
