@@ -27,9 +27,17 @@ RUN ldconfig
 ENV PKG_CONFIG_PATH="/usr/local/lib/pkgconfig"
 ENV LD_LIBRARY_PATH="/usr/local/lib"
 
+# Install RabbitMQ team signing key and repository
+RUN curl -1sLf "https://keys.openpgp.org/vks/v1/by-fingerprint/0A9AF2115F4687BD29803A206B73A36E6026DFCA" | gpg --dearmor | tee /usr/share/keyrings/com.rabbitmq.team.gpg > /dev/null \
+    && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/com.rabbitmq.team.gpg] https://ppa1.novemberain.com/rabbitmq/rabbitmq-erlang/deb/debian bookworm main" | tee /etc/apt/sources.list.d/rabbitmq.list \
+    && echo "deb-src [arch=amd64 signed-by=/usr/share/keyrings/com.rabbitmq.team.gpg] https://ppa1.novemberain.com/rabbitmq/rabbitmq-erlang/deb/debian bookworm main" | tee -a /etc/apt/sources.list.d/rabbitmq.list \
+    && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/com.rabbitmq.team.gpg] https://ppa1.novemberain.com/rabbitmq/rabbitmq-server/deb/debian bookworm main" | tee -a /etc/apt/sources.list.d/rabbitmq.list \
+    && echo "deb-src [arch=amd64 signed-by=/usr/share/keyrings/com.rabbitmq.team.gpg] https://ppa1.novemberain.com/rabbitmq/rabbitmq-server/deb/debian bookworm main" | tee -a /etc/apt/sources.list.d/rabbitmq.list
+
+
 RUN apt-get update -y \
     && apt-get install -y --no-install-recommends build-essential cmake libtool autoconf automake pkg-config gnupg dirmngr \
-      libssl-dev libre2-dev zlib1g-dev libsystemd-dev libcurl4-openssl-dev
+      libssl-dev libre2-dev zlib1g-dev libsystemd-dev libcurl4-openssl-dev librabbitmq-dev
 
 RUN --mount=type=secret,id=SIGNALWIRE_TOKEN,env=SIGNALWIRE_TOKEN \
     curl -sSL https://freeswitch.org/fsget | bash -s ${SIGNALWIRE_TOKEN} release \
