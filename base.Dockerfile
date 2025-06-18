@@ -48,7 +48,8 @@ ENV ACTIONS_RUNNER_PRINT_LOG_TO_STDOUT=1
 ENV ImageOS=debian11
 
 RUN apt update -y \
-    && apt install -y --no-install-recommends sudo lsb-release gpg-agent software-properties-common git curl jq unzip file rubygems \
+    && apt install -y --no-install-recommends sudo lsb-release gpg-agent software-properties-common git curl \
+      ca-certificates jq unzip file rubygems \
     && rm -rf /var/lib/apt/lists/*
 
 RUN adduser --disabled-password --gecos "" --uid 1001 runner \
