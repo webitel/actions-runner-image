@@ -60,7 +60,6 @@ jobs:
 
           - dockerfile-path: c.Dockerfile
             image-name: c
-            build-secrets: SIGNALWIRE_TOKEN=${{ secrets.SIGNALWIRE_TOKEN }}
             build-args: |
               RUNNER_VERSION=${{ github.event.inputs.version }}
               POSTGRES_VERSION=15
@@ -93,5 +92,8 @@ jobs:
           dockerfile-path: ${{ matrix.dockerfile-path }}
           image-name: ghcr.io/${{ github.repository }}/${{ matrix.image-name }}
           version: ${{ github.event.inputs.version }}
-          build-secrets: ${{ matrix.build-secrets }}
-          build-args: ${{ matrix.build-args }}
+          build-secrets: |
+            SIGNALWIRE_TOKEN=${{ secrets.SIGNALWIRE_TOKEN }}
+
+          build-args: |  
+            ${{ matrix.build-args }}
