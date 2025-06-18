@@ -65,6 +65,14 @@ jobs:
               RUNNER_VERSION=${{ github.event.inputs.version }}
               POSTGRES_VERSION=15
 
+          - dockerfile-path: frontend.Dockerfile
+            image-name: frontend
+            build-args: |
+              RUNNER_VERSION=${{ github.event.inputs.version }}
+              NODE_VERSION=22.16.0
+              PNPM_VERSION=10.12.1
+              YARN_VERSION=4.9.2
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
