@@ -3,7 +3,7 @@ ARG PNPM_VERSION=10.12.1
 ARG YARN_VERSION=4.9.2
 ARG RUNNER_VERSION=2.323.0
 
-FROM node:${NODE_VERSION}-alpine AS node
+FROM node:${NODE_VERSION}-bookworm-slim AS node
 FROM ghcr.io/webitel/actions-runner-image/base:${RUNNER_VERSION}
 
 USER root
