@@ -53,7 +53,7 @@ RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/rabbitmq.E495BB49CC4BBE5
 RUN apt-get update -y \
     && apt-get install -y --no-install-recommends build-essential cmake libtool autoconf automake pkg-config gnupg dirmngr \
       libssl-dev libre2-dev zlib1g-dev libsystemd-dev libcurl4-openssl-dev librabbitmq-dev \
-      libc-ares-dev libz-dev
+      libc-ares-dev libz-dev libspeexdsp-dev
 
 RUN --mount=type=secret,id=SIGNALWIRE_TOKEN,env=SIGNALWIRE_TOKEN \
     curl -sSL https://freeswitch.org/fsget | bash -s ${SIGNALWIRE_TOKEN} release \
