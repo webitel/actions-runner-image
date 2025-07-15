@@ -10,9 +10,20 @@ RUN set -ex; \
     cd /tmp && git clone --depth 1 --branch 20250127.1 https://github.com/abseil/abseil-cpp.git; \
     cd abseil-cpp && mkdir build && cd build; \
     cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DABSL_BUILD_TESTING=OFF .. ; \
-    make -j$(nproc) && make install
+    make -j$(nproc) && make install; \
+    ldconfig
 
-RUN ldconfig
+# Build gRPC
+RUN set -ex; \
+    cd /tmp && git clone --recurse-submodules -b v1.48.0 https://github.com/grpc/grpc; \
+    cd grpc && mkdir -p cmake/build && cd cmake/build; \
+    cmake -DgRPC_INSTALL=ON \
+          -DgRPC_BUILD_TESTS=OFF \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_INSTALL_PREFIX=/usr/local \
+          ../.. ; \
+    make -j$(nproc) && make install; \
+    ldconfig
 
 FROM ghcr.io/webitel/actions-runner-image/base:${RUNNER_VERSION}
 
