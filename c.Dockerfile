@@ -19,6 +19,7 @@ RUN set -ex; \
     cd grpc && mkdir -p cmake/build && cd cmake/build; \
     cmake -DgRPC_INSTALL=ON \
           -DgRPC_BUILD_TESTS=OFF \
+          -DgRPC_ABSL_PROVIDER=package \
           -DCMAKE_BUILD_TYPE=Release \
           -DCMAKE_INSTALL_PREFIX=/usr/local \
           ../.. ; \
