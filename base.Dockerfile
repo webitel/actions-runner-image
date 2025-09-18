@@ -48,7 +48,7 @@ ENV ACTIONS_RUNNER_PRINT_LOG_TO_STDOUT=1
 ENV ImageOS=debian11
 
 RUN mkdir -p -m 755 /etc/apt/keyrings \
-    && out=$(mktemp) && wget -nv -O$out https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+    && out=$(mktemp) && curl -sSL https://cli.github.com/packages/githubcli-archive-keyring.gpg -o "$out" \
     && cat $out | tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
     && chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
     && mkdir -p -m 755 /etc/apt/sources.list.d \
