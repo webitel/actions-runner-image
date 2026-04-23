@@ -26,6 +26,23 @@ RUN set -ex; \
     make -j$(nproc) && make install; \
     ldconfig
 
+# Build google-cloud-cpp (speech component only) on top of pre-installed
+# gRPC/Protobuf/Abseil. Used by freeswitch-mod-google-transcribe.
+RUN set -ex; \
+    apt-get update -y && apt-get install -y --no-install-recommends libssl-dev libcurl4-openssl-dev nlohmann-json3-dev; \
+    cd /tmp && git clone --depth 1 -b v2.38.0 https://github.com/googleapis/google-cloud-cpp.git; \
+    cd google-cloud-cpp && mkdir -p build && cd build; \
+    cmake -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_INSTALL_PREFIX=/usr/local \
+          -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+          -DBUILD_TESTING=OFF \
+          -DGOOGLE_CLOUD_CPP_WITH_MOCKS=OFF \
+          -DGOOGLE_CLOUD_CPP_ENABLE_EXAMPLES=OFF \
+          -DGOOGLE_CLOUD_CPP_ENABLE=speech \
+          .. ; \
+    make -j$(nproc) && make install; \
+    ldconfig
+
 FROM ghcr.io/webitel/actions-runner-image/base:${RUNNER_VERSION}
 
 ARG POSTGRES_VERSION=15
@@ -38,6 +55,7 @@ RUN ldconfig
 
 ENV PKG_CONFIG_PATH="/usr/local/lib/pkgconfig"
 ENV LD_LIBRARY_PATH="/usr/local/lib"
+ENV PATH="/usr/lib/postgresql/${POSTGRES_VERSION}/bin:${PATH}"
 
 # Install RabbitMQ team signing key and repository
 RUN curl -1sLf "https://keys.openpgp.org/vks/v1/by-fingerprint/0A9AF2115F4687BD29803A206B73A36E6026DFCA" | gpg --dearmor | tee /usr/share/keyrings/com.rabbitmq.team.gpg > /dev/null \
@@ -53,7 +71,8 @@ RUN echo "deb [arch=amd64 signed-by=/usr/share/keyrings/rabbitmq.E495BB49CC4BBE5
 RUN apt-get update -y \
     && apt-get install -y --no-install-recommends build-essential cmake libtool autoconf automake pkg-config gnupg dirmngr \
       libssl-dev libre2-dev zlib1g-dev libsystemd-dev libcurl4-openssl-dev librabbitmq-dev \
-      libc-ares-dev libz-dev libspeexdsp-dev
+      libc-ares-dev libz-dev libspeexdsp-dev \
+      postgresql-server-dev-${POSTGRES_VERSION}
 
 RUN --mount=type=secret,id=SIGNALWIRE_TOKEN,env=SIGNALWIRE_TOKEN \
     curl -sSL https://freeswitch.org/fsget | bash -s ${SIGNALWIRE_TOKEN} release \
