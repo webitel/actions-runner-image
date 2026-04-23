@@ -15,7 +15,7 @@ RUN set -ex; \
 
 # Build gRPC
 RUN set -ex; \
-    cd /tmp && git clone --recurse-submodules -b v1.48.0 https://github.com/grpc/grpc; \
+    cd /tmp && git clone --recurse-submodules --shallow-submodules --depth 1 -b v1.69.0 https://github.com/grpc/grpc; \
     cd grpc && mkdir -p cmake/build && cd cmake/build; \
     cmake -DgRPC_INSTALL=ON \
           -DgRPC_BUILD_TESTS=OFF \
