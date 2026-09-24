@@ -7,6 +7,7 @@ ARG RUNNER_CONTAINER_HOOKS_VERSION=0.8.1
 ARG DOCKER_VERSION=29.4.1
 ARG BUILDX_VERSION=0.33.0
 ARG NFPM_VERSION=2.46.3
+ARG OSV_SCANNER_VERSION=2.6.0
 
 RUN apt update -y && apt install curl unzip -y
 
@@ -37,6 +38,10 @@ RUN export NFPM_ARCH=${TARGETARCH} \
     && curl -fLo nfpm.tar.gz "https://github.com/goreleaser/nfpm/releases/download/v${NFPM_VERSION}/nfpm_${NFPM_VERSION}_Linux_${NFPM_ARCH}.tar.gz" \
     && tar xzf nfpm.tar.gz nfpm \
     && rm nfpm.tar.gz
+
+# Download osv-scanner
+RUN curl -fLo osv-scanner "https://github.com/google/osv-scanner/releases/download/v${OSV_SCANNER_VERSION}/osv-scanner_${TARGETOS}_${TARGETARCH}" \
+    && chmod +x osv-scanner
 
 FROM mcr.microsoft.com/dotnet/runtime-deps:8.0-bookworm-slim
 
@@ -75,6 +80,7 @@ WORKDIR /home/runner
 COPY --chown=runner:docker --from=build /actions-runner .
 COPY --from=build /usr/local/lib/docker/cli-plugins/docker-buildx /usr/local/lib/docker/cli-plugins/docker-buildx
 COPY --from=build /actions-runner/nfpm /usr/local/bin/nfpm
+COPY --from=build /actions-runner/osv-scanner /usr/local/bin/osv-scanner
 
 RUN install -o root -g root -m 755 docker/* /usr/bin/ && rm -rf docker
 

@@ -71,6 +71,13 @@ jobs:
               PNPM_VERSION=10.12.1
               YARN_VERSION=4.9.2
 
+          - dockerfile-path: python.Dockerfile
+            image-name: python
+            build-args: |
+              RUNNER_VERSION=${{ github.event.inputs.version }}
+              UV_VERSION=0.12.18
+              PYTHON_VERSIONS=3.11 3.12 3.13 3.14
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
