@@ -17,4 +17,14 @@ ENV PATH=$GOPATH/bin:/usr/local/go/bin:$PATH
 
 COPY --from=golangci /usr/bin/golangci-lint /usr/local/bin/golangci-lint
 
+# C toolchain for cgo: native amd64 plus the arm64 cross toolchain, with the C libraries Go code links against.
+# Go enables cgo automatically once gcc is on PATH, so workflows must set CGO_ENABLED explicitly.
+RUN dpkg --add-architecture arm64 \
+    && apt-get update -y \
+    && apt-get install -y --no-install-recommends \
+      gcc libc6-dev pkg-config \
+      gcc-aarch64-linux-gnu libc6-dev-arm64-cross \
+      libsystemd-dev libsystemd-dev:arm64 \
+    && rm -rf /var/lib/apt/lists/*
+
 USER runner
