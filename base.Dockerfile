@@ -53,7 +53,7 @@ ENV ACTIONS_RUNNER_PRINT_LOG_TO_STDOUT=1
 ENV ImageOS=debian11
 
 RUN apt update -y \
-    && apt install -y --no-install-recommends sudo lsb-release gpg-agent software-properties-common git curl ca-certificates jq unzip file
+    && apt install -y --no-install-recommends sudo lsb-release gpg-agent software-properties-common git curl ca-certificates jq unzip zstd file
 
 RUN mkdir -p -m 755 /etc/apt/keyrings \
     && out=$(mktemp) && curl -sSL https://cli.github.com/packages/githubcli-archive-keyring.gpg -o "$out" \
