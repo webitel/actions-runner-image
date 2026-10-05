@@ -48,6 +48,7 @@ FROM mcr.microsoft.com/dotnet/runtime-deps:8.0-bookworm-slim
 ARG DEB_S3_VERSION=24.6.0
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV LANG=C.UTF-8
 ENV RUNNER_MANUALLY_TRAP_SIG=1
 ENV ACTIONS_RUNNER_PRINT_LOG_TO_STDOUT=1
 ENV ImageOS=debian11
