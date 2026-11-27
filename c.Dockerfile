@@ -9,7 +9,11 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends ca-certifica
 RUN set -ex; \
     cd /tmp && git clone --depth 1 --branch 20250127.1 https://github.com/abseil/abseil-cpp.git; \
     cd abseil-cpp && mkdir build && cd build; \
-    cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DABSL_BUILD_TESTING=OFF .. ; \
+    cmake -DCMAKE_INSTALL_PREFIX=/usr/local \
+    -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+    -DABSL_BUILD_TESTING=OFF \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DABSL_PROPAGATE_CXX_STD=ON .. ; \
     make -j$(nproc) && make install; \
     ldconfig
 
