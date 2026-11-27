@@ -2,10 +2,6 @@ name: Release image
 
 on:
   workflow_dispatch:
-    inputs:
-      version:
-        description: "GitHub Actions runner version, e.g. 2.338.2"
-        required: true
 
 jobs:
   base:
@@ -15,9 +11,22 @@ jobs:
       contents: read
       packages: write
 
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Read runner version
+        id: version
+        run: |
+          version=$(sed -nE 's|^FROM ghcr\.io/actions/actions-runner:([0-9.]+)@.*|\1|p' base.Dockerfile)
+          if [ -z "$version" ]; then
+            echo "::error file=base.Dockerfile::runner image tag not found"
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -34,9 +43,7 @@ jobs:
         with:
           dockerfile-path: base.Dockerfile
           image-name: ghcr.io/${{ github.repository }}/base
-          version: ${{ github.event.inputs.version }}
-          build-args: |
-              RUNNER_VERSION=${{ github.event.inputs.version }}
+          version: ${{ steps.version.outputs.version }}
 
   images:
     name: Build runner ${{ matrix.image-name }}-image
@@ -80,9 +87,9 @@ jobs:
         with:
           dockerfile-path: ${{ matrix.dockerfile-path }}
           image-name: ghcr.io/${{ github.repository }}/${{ matrix.image-name }}
-          version: ${{ github.event.inputs.version }}
+          version: ${{ needs.base.outputs.version }}
           build-secrets: |
             SIGNALWIRE_TOKEN=${{ secrets.SIGNALWIRE_TOKEN }}
 
           build-args: |
-            RUNNER_VERSION=${{ github.event.inputs.version }}
+            RUNNER_VERSION=${{ needs.base.outputs.version }}
