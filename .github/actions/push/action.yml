@@ -23,7 +23,7 @@ runs:
   steps:
     - name: Extract metadata
       id: meta
-      uses: docker/metadata-action@v5
+      uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
       with:
         images: ${{ inputs.image-name }}
         tags: |
@@ -32,7 +32,7 @@ runs:
           type=sha
 
     - name: Build and push Docker image
-      uses: docker/build-push-action@v5
+      uses: docker/build-push-action@ca052bb54ab0790a636c9b5f226502c73d547a25 # v5.4.0
       with:
         file: ${{ inputs.dockerfile-path }}
         context: .
@@ -40,7 +40,7 @@ runs:
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64
-        secrets: | 
+        secrets: |
           ${{ inputs.build-secrets }}
 
         build-args: |
