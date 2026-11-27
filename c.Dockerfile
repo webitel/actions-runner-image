@@ -81,7 +81,7 @@ RUN apt-get update -y \
 RUN --mount=type=secret,id=SIGNALWIRE_TOKEN,env=SIGNALWIRE_TOKEN \
     curl -sSL https://freeswitch.org/fsget | bash -s ${SIGNALWIRE_TOKEN} release \
     && apt install -y --no-install-recommends libfreeswitch-dev \
-    && rm -f /etc/apt/auth.conf
+    && rm -f /etc/apt/auth.conf /etc/apt/sources.list.d/freeswitch.sources /etc/apt/sources.list.d/freeswitch.list
 
 RUN rm -rf /var/lib/apt/lists/*
 
