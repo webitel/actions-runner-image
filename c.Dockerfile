@@ -65,13 +65,13 @@ RUN apt-get update -y \
     && apt-get install -y --no-install-recommends build-essential cmake libtool autoconf automake pkg-config gnupg dirmngr \
       libssl-dev libre2-dev zlib1g-dev libsystemd-dev libcurl4-openssl-dev librabbitmq-dev \
       libc-ares-dev libz-dev libspeexdsp-dev \
-      postgresql-server-dev-${POSTGRES_VERSION}
+      postgresql-server-dev-${POSTGRES_VERSION} \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN --mount=type=secret,id=SIGNALWIRE_TOKEN,env=SIGNALWIRE_TOKEN \
     curl -sSL https://freeswitch.org/fsget | bash -s ${SIGNALWIRE_TOKEN} release \
-    && apt install -y --no-install-recommends libfreeswitch-dev \
-    && rm -f /etc/apt/auth.conf /etc/apt/sources.list.d/freeswitch.sources /etc/apt/sources.list.d/freeswitch.list
-
-RUN rm -rf /var/lib/apt/lists/*
+    && apt-get install -y --no-install-recommends libfreeswitch-dev \
+    && rm -f /etc/apt/auth.conf /etc/apt/sources.list.d/freeswitch.sources /etc/apt/sources.list.d/freeswitch.list \
+    && rm -rf /var/lib/apt/lists/*
 
 USER runner
