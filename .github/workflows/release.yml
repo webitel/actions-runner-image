@@ -52,31 +52,15 @@ jobs:
         include:
           - dockerfile-path: backend.Dockerfile
             image-name: backend
-            build-args: |
-              RUNNER_VERSION=${{ github.event.inputs.version }}
-              GO_VERSION=1.25
-              GOLANGCI_LINT_VERSION=v2.11.4
 
           - dockerfile-path: c.Dockerfile
             image-name: c
-            build-args: |
-              RUNNER_VERSION=${{ github.event.inputs.version }}
-              POSTGRES_VERSION=15
 
           - dockerfile-path: frontend.Dockerfile
             image-name: frontend
-            build-args: |
-              RUNNER_VERSION=${{ github.event.inputs.version }}
-              NODE_VERSION=24
-              PNPM_VERSION=10.12.1
-              YARN_VERSION=4.9.2
 
           - dockerfile-path: python.Dockerfile
             image-name: python
-            build-args: |
-              RUNNER_VERSION=${{ github.event.inputs.version }}
-              UV_VERSION=0.12.18
-              PYTHON_VERSIONS=3.11 3.12 3.13 3.14
 
     steps:
       - name: Checkout code
@@ -101,5 +85,5 @@ jobs:
           build-secrets: |
             SIGNALWIRE_TOKEN=${{ secrets.SIGNALWIRE_TOKEN }}
 
-          build-args: |  
-            ${{ matrix.build-args }}
+          build-args: |
+            RUNNER_VERSION=${{ github.event.inputs.version }}

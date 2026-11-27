@@ -1,5 +1,5 @@
 ARG UV_VERSION=0.12.18
-ARG RUNNER_VERSION=2.334.0
+ARG RUNNER_VERSION=2.338.2
 
 FROM ghcr.io/astral-sh/uv:${UV_VERSION} AS uv
 FROM ghcr.io/webitel/actions-runner-image/base:${RUNNER_VERSION}
