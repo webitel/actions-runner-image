@@ -28,6 +28,7 @@ runs:
         images: ${{ inputs.image-name }}
         tags: |
           type=raw,value=${{ inputs.version }}
+          type=raw,value=${{ inputs.version }}-${{ github.run_number }}
           type=sha
 
     - name: Build and push Docker image

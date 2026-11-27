@@ -4,8 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Github Actions runner version"
-        default: "latest"
+        description: "GitHub Actions runner version, e.g. 2.338.2"
         required: true
 
 jobs:
