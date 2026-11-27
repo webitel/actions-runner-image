@@ -68,8 +68,8 @@ jobs:
             build-args: |
               RUNNER_VERSION=${{ github.event.inputs.version }}
               NODE_VERSION=24
-              PNPM_VERSION=10.12.1
-              YARN_VERSION=4.9.2
+              PNPM_VERSION=12.23.0
+              YARN_VERSION=1.22.22
 
           - dockerfile-path: python.Dockerfile
             image-name: python
