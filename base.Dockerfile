@@ -51,7 +51,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=C.UTF-8
 ENV RUNNER_MANUALLY_TRAP_SIG=1
 ENV ACTIONS_RUNNER_PRINT_LOG_TO_STDOUT=1
-ENV ImageOS=debian11
+ENV ImageOS=debian12
 
 RUN apt-get update -y \
     && apt-get install -y --no-install-recommends sudo lsb-release gpg gpg-agent python3 git curl ca-certificates jq unzip zstd file rubygems \
