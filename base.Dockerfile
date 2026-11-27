@@ -71,8 +71,12 @@ RUN adduser --disabled-password --gecos "" --uid 1001 runner \
     && groupadd docker --gid 123 \
     && usermod -aG sudo runner \
     && usermod -aG docker runner \
-    && echo "%sudo   ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers \
-    && echo "Defaults env_keep += \"DEBIAN_FRONTEND\"" >> /etc/sudoers
+    && printf '%s\n' \
+      'Defaults env_keep += "DEBIAN_FRONTEND"' \
+      'Defaults !secure_path' \
+      '%sudo ALL=(ALL:ALL) NOPASSWD:ALL' > /etc/sudoers.d/runner \
+    && chmod 0440 /etc/sudoers.d/runner \
+    && visudo -c
 
 RUN gem install deb-s3 -v "${DEB_S3_VERSION}"
 
