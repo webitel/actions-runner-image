@@ -2,12 +2,12 @@ FROM mcr.microsoft.com/dotnet/runtime-deps:8.0-bookworm-slim AS build
 
 ARG TARGETOS=linux
 ARG TARGETARCH=amd64
-ARG RUNNER_VERSION=2.334.0
+ARG RUNNER_VERSION=2.338.2
 ARG RUNNER_CONTAINER_HOOKS_VERSION=0.8.1
-ARG DOCKER_VERSION=29.4.1
-ARG BUILDX_VERSION=0.33.0
-ARG NFPM_VERSION=2.46.3
-ARG OSV_SCANNER_VERSION=2.6.0
+ARG DOCKER_VERSION=29.10.1
+ARG BUILDX_VERSION=0.39.1
+ARG NFPM_VERSION=2.49.0
+ARG OSV_SCANNER_VERSION=2.7.1
 
 RUN apt update -y && apt install curl unzip -y
 
@@ -45,7 +45,7 @@ RUN curl -fLo osv-scanner "https://github.com/google/osv-scanner/releases/downlo
 
 FROM mcr.microsoft.com/dotnet/runtime-deps:8.0-bookworm-slim
 
-ARG DEB_S3_VERSION=24.6.0
+ARG DEB_S3_VERSION=26.1.0
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=C.UTF-8

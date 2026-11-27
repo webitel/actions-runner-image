@@ -1,4 +1,4 @@
-ARG RUNNER_VERSION=2.334.0
+ARG RUNNER_VERSION=2.338.2
 
 FROM debian:bookworm-slim AS builder
 

@@ -54,8 +54,8 @@ jobs:
             image-name: backend
             build-args: |
               RUNNER_VERSION=${{ github.event.inputs.version }}
-              GO_VERSION=1.25
-              GOLANGCI_LINT_VERSION=v2.11.4
+              GO_VERSION=1.26
+              GOLANGCI_LINT_VERSION=v2.15.0
 
           - dockerfile-path: c.Dockerfile
             image-name: c
