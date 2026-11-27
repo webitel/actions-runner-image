@@ -1,9 +1,7 @@
-ARG GO_VERSION=1.26
-ARG GOLANGCI_LINT_VERSION=v2.15.0
 ARG RUNNER_VERSION=2.338.2
 
-FROM golang:${GO_VERSION}-alpine AS go
-FROM golangci/golangci-lint:${GOLANGCI_LINT_VERSION}-alpine AS golangci
+FROM golang:1.26.11-alpine@sha256:ecb67f987aa1a57794c91d19ade7ae0209f2f0f5496aaef9e6ae85ddf92d02ab AS go
+FROM golangci/golangci-lint:v2.15.0-alpine@sha256:2ba875b990f1d8501ad4ec19be1ea0701e316ec3a4b764f7b129f62f01318bbf AS golangci
 
 FROM ghcr.io/webitel/actions-runner-image/base:${RUNNER_VERSION}
 

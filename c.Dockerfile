@@ -1,6 +1,6 @@
 ARG RUNNER_VERSION=2.338.2
 
-FROM debian:bookworm-slim AS builder
+FROM debian:bookworm-slim@sha256:e67eeead736ff7bbe258ef088bff683635c561b1fcfefad0806c1df4ab49ce0e AS builder
 
 RUN apt-get update -y && apt-get install -y --no-install-recommends ca-certificates \
     build-essential cmake git autoconf libtool pkg-config curl unzip
