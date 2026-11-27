@@ -9,7 +9,7 @@ ARG BUILDX_VERSION=0.39.1
 ARG NFPM_VERSION=2.49.0
 ARG OSV_SCANNER_VERSION=2.7.1
 
-RUN apt update -y && apt install curl unzip -y
+RUN apt-get update -y && apt-get install -y --no-install-recommends ca-certificates curl unzip
 
 WORKDIR /actions-runner
 RUN export RUNNER_ARCH=${TARGETARCH} \
@@ -53,18 +53,14 @@ ENV RUNNER_MANUALLY_TRAP_SIG=1
 ENV ACTIONS_RUNNER_PRINT_LOG_TO_STDOUT=1
 ENV ImageOS=debian11
 
-RUN apt update -y \
-    && apt install -y --no-install-recommends sudo lsb-release gpg-agent software-properties-common git curl ca-certificates jq unzip zstd file
-
-RUN mkdir -p -m 755 /etc/apt/keyrings \
-    && out=$(mktemp) && curl -sSL https://cli.github.com/packages/githubcli-archive-keyring.gpg -o "$out" \
-    && cat $out | tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
+RUN apt-get update -y \
+    && apt-get install -y --no-install-recommends sudo lsb-release gpg gpg-agent python3 git curl ca-certificates jq unzip zstd file rubygems \
+    && mkdir -p -m 755 /etc/apt/keyrings \
+    && curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg -o /etc/apt/keyrings/githubcli-archive-keyring.gpg \
     && chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
-    && mkdir -p -m 755 /etc/apt/sources.list.d \
-    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-
-RUN apt update -y \
-    && apt install -y --no-install-recommends rubygems gh \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" > /etc/apt/sources.list.d/github-cli.list \
+    && apt-get update -y \
+    && apt-get install -y --no-install-recommends gh \
     && rm -rf /var/lib/apt/lists/*
 
 RUN adduser --disabled-password --gecos "" --uid 1001 runner \
